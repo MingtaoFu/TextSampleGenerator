@@ -5,17 +5,21 @@
     <title></title>
     <style rel="text/css">
       body {
+        
+      }
+      #container {
         width: 1280px;
         height:720px;
         background: -webkit-gradient(linear, 0 0, 0 bottom, from(#74a9d9), to(rgba(94, 94, 234, 0.5)));
         overflow: hidden;
       }
       #para {
+        position: relative;
         width: 60%;
         height: 60%;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 150px;
+        top: 150px;
         transform: rotate(45deg);
       }
       span {
@@ -27,8 +31,11 @@
     </style>
   </head>
   <body>
-    <p id="para">
-    </p>
-  <script type="text/javascript" src="index.js">
-  </script>
+    <div id="container">
+      <p id="para">
+      </p>
+    </div>
+    <a id="saveAs" href="#">Click to download</a>
+  <script type="text/javascript" src="node_modules/html2canvas/dist/html2canvas.min.js"></script>
+  <script type="text/javascript" src="index.js"></script>
 </html>

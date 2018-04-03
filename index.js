@@ -69,6 +69,7 @@ class MultiRowsGenerator {
     this.container_DOM = container_DOM;
   }
   draw() {
+    this.container_DOM.innerHTML = "";
     for ( var i = 0; i < this.rows_num; i++ ) {
       var row = this.row_generator.get_row();
       row.draw( this.container_DOM );
@@ -77,5 +78,29 @@ class MultiRowsGenerator {
 }
 
 var container_DOM = document.querySelector( "#para" );
-var multi_rows_generator = new MultiRowsGenerator( container_DOM, [10, 13], [1, 2], [-2, 2], [100, 300] );
-multi_rows_generator.draw();
+var multi_rows_generator = new MultiRowsGenerator( container_DOM, [8, 10], [1, 2], [-2, 2], [100, 200] );
+var xx = function( i ) {
+  multi_rows_generator.draw();
+
+  html2canvas(document.getElementById("container")).then(function(canvas) {
+    // var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+    //image.setAttribute("download", "55");
+    var link = document.getElementById('saveAs');
+
+    link.href = canvas.toDataURL();   /// set data-uri as href, defaults to PNG
+      link.download = 'myFilename'+i+'.png'; /// set filename
+
+    link.click();
+    //window.location.href = image; // it will save locally
+
+    });
+}
+
+var num = 0;
+var interval = setInterval( function() {
+  num ++;
+  xx(num);
+  if (num > 10) {
+    clearInterval(interval);
+  }
+}, 1);
