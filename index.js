@@ -14,40 +14,68 @@ class WordGenerator {
 
 
 class Row {
-  constructor( word_list, angle, left ) {
+  constructor( sentence, angle, left ) {
     this.DOM = null;
+    this.sentence = sentence;
+    this.angle = angle;
+    this.left = left;
   }
   draw( container_DOM ) {
     var DOM = document.createElement( "span" );
-    DOM.style.transform = "rotate(" + self.a;
+    DOM.innerText = this.sentence;
+    DOM.style.transform = "rotate(" + this.angle + "deg)";
+    DOM.style.marginLeft = this.left + "px";
+    container_DOM.appendChild( DOM );
+    this.DOM = DOM;
   }
 }
 
 class RowGenerator {
-  constructor( words_range, angle_range ) {
+  constructor( words_range, angle_range, left_range ) {
     this.words_range0 = words_range[0];
     this.words_num_range = words_range[1] - words_range[0];
 
     this.angle_range0 = angle_range[0];
     this.angle_range = angle_range[1] - angle_range[0];
 
+    this.left_range0 = left_range[0];
+    this.left_range = left_range[1] - left_range[0];
+
     this.word_generator = new WordGenerator();
 
   }
   get_row() {
-    words_num = Math.round( Math.random() * this.words_num_range ) + this.words_range0;
-    word_list = [];
+    var words_num = Math.round( Math.random() * this.words_num_range ) + this.words_range0;
+    var word_list = [];
     for ( var i = 0; i < words_num; i++ ) {
-      word = this.word_generator.get_word();
+      var word = this.word_generator.get_word();
       word_list.push(word);
     }
-    sentence = word_list.join( " " );
+    var sentence = word_list.join( " " );
 
     var angle = Math.random() * this.angle_range + this.angle_range0;
-    var row = new Row( sentence, angle, left );
-  }
 
+    var left = Math.random() * this.left_range + this.left_range0;
+
+    var row = new Row( sentence, angle, left );
+    return row;
+  }
 }
 
-var row_generator = new RowGenerator( [0, 5], [43, 47] );
+class MultiRowsGenerator {
+  constructor( container_DOM, rows_num_range, words_range, angle_range, left_range ) {
+    this.row_generator = new RowGenerator( words_range, angle_range, left_range );
+    this.rows_num = Math.round( Math.random() * ( rows_num_range[1] - rows_num_range[0] ) ) + rows_num_range[0];
+    this.container_DOM = container_DOM;
+  }
+  draw() {
+    for ( var i = 0; i < this.rows_num; i++ ) {
+      var row = this.row_generator.get_row();
+      row.draw( this.container_DOM );
+    }
+  }
+}
+
 var container_DOM = document.querySelector( "#para" );
+var multi_rows_generator = new MultiRowsGenerator( container_DOM, [10, 13], [1, 2], [-2, 2], [100, 300] );
+multi_rows_generator.draw();
